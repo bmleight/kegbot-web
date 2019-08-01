@@ -1,6 +1,5 @@
 const React = require('react');
 const Logo = require('../assets/brut-ipa-logo.jpg');
-const Classes = require('./HomeView.scss');
 const { PageWrapper } = require('styles/global-components.js');
 const { Typography } = require('@material-ui/core');
 
@@ -9,7 +8,6 @@ module.exports = () => (
     <PageWrapper>
         <img
             alt='Juicy Brut IPA'
-            className={Classes.duck}
             src={Logo}
         />
         <Typography variant='display2'>Juicy Brut IPA</Typography>

@@ -55,7 +55,7 @@ exports.lightsOff = (direction, data = {}) => {
 
     return (dispatch) => {
 
-        const message = new Message('{L1:0,L2:0,L3:0,L4:0,L5:0,L6:0}');
+        const message = new Paho.MQTT.Message('{L1:0,L2:0,L3:0,L4:0,L5:0,L6:0}');
         message.destinationName = 'mkl.lytebulb';
 
         Client.send(message);
@@ -66,8 +66,19 @@ exports.lightsOn = (direction, data = {}) => {
 
     return (dispatch) => {
 
-        const message = new Message('{L1:1,L2:1,L3:1,L4:1,L5:1,L6:1}');
+        const message = new Paho.MQTT.Message('{L1:1,L2:1,L3:1,L4:1,L5:1,L6:1}');
         message.destinationName = 'mkl.lytebulb';
+
+        Client.send(message);
+    };
+};
+
+exports.speak = (speach) => {
+
+    return (dispatch) => {
+
+        const message = new Paho.MQTT.Message(speach);
+        message.destinationName = 'hackbot/speak';
 
         Client.send(message);
     };

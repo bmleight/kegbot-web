@@ -2,8 +2,13 @@ const React = require('react');
 const T = require('prop-types');
 const NavLink = require('react-router-dom').NavLink;
 const Classes = require('./styles.scss');
-const { AppBar, Typography, Toolbar, Button, CircularProgress, SvgIcon } = require('@material-ui/core');
+const { default: AppBar } = require('@material-ui/core/AppBar');
+const { default: Button } = require('@material-ui/core/Button');
+const { default: CircularProgress } = require('@material-ui/core/CircularProgress');
 const { default: IconButton } = require('@material-ui/core/IconButton');
+const { default: Toolbar } = require('@material-ui/core/Toolbar');
+const { default: Typography } = require('@material-ui/core/Typography');
+// const { default: SvgIcon } = require('@material-ui/core/SvgIcon');
 const { default: CheckCircle } = require('@material-ui/icons/CheckCircle');
 const { default: BatteryFull } = require('@material-ui/icons/BatteryFull');
 const { default: BatteryAlert } = require('@material-ui/icons/BatteryAlert');
@@ -14,7 +19,14 @@ const { default: Battery60 } = require('@material-ui/icons/Battery60');
 const { default: Battery50 } = require('@material-ui/icons/Battery50');
 const { default: Battery30 } = require('@material-ui/icons/Battery30');
 const { default: Battery20 } = require('@material-ui/icons/Battery20');
-const BeerIcon = require('./beer-icon.svg');
+const { default: ChatBubble } = require('@material-ui/icons/ChatBubble');
+const { default: Dialog } = require('@material-ui/core/Dialog');
+const { default: DialogActions } = require('@material-ui/core/DialogActions');
+const { default: DialogContent } = require('@material-ui/core/DialogContent');
+const { default: DialogContentText } = require('@material-ui/core/DialogContentText');
+const { default: DialogTitle } = require('@material-ui/core/DialogTitle');
+const { default: TextField } = require('@material-ui/core/TextField');
+// const BeerIcon = require('./beer-icon.svg');
 
 module.exports = class Header extends React.Component {
 
@@ -22,10 +34,16 @@ module.exports = class Header extends React.Component {
         logout: T.func.isRequired,
         connect: T.func.isRequired,
         disconnect: T.func.isRequired,
+        speak: T.func.isRequired,
         isAuthenticated: T.bool.isRequired,
         isConnected: T.bool.isRequired,
         connectionPending: T.bool.isRequired,
         battery: T.number
+    };
+
+    state = {
+        isTalkModalOpen: false,
+        speach: ''
     };
 
     constructor(props) {
@@ -34,7 +52,9 @@ module.exports = class Header extends React.Component {
 
         this.renderNotAuthenticated = this._renderNotAuthenticated.bind(this);
         this.renderAuthenticated = this._renderAuthenticated.bind(this);
-
+        this.handleTalkClick = this._handleTalkClick.bind(this);
+        this.handleClose = this._handleClose.bind(this);
+        this.speak = this._speak.bind(this);
     }
 
     _renderNotAuthenticated() {
@@ -74,6 +94,22 @@ module.exports = class Header extends React.Component {
                 </Button>
             </React.Fragment>
         );
+    }
+
+    _handleTalkClick() {
+
+        this.setState({ isTalkModalOpen: true });
+    }
+
+    _handleClose() {
+
+        this.setState({ isTalkModalOpen: false });
+    }
+
+    async _speak(speach) {
+
+        await this.props.speak(speach);
+        this.handleClose();
     }
 
     render() {
@@ -149,6 +185,9 @@ module.exports = class Header extends React.Component {
                     >
                         Drive
                     </Button>
+                    <IconButton onClick={this.handleTalkClick}>
+                        <ChatBubble />
+                    </IconButton>
                     <IconButton>
                         {icon}
                     </IconButton>
@@ -156,6 +195,34 @@ module.exports = class Header extends React.Component {
                         <BatteryIcon style={{ color: 'white' }} />
                     </IconButton>
                 </Toolbar>
+                <Dialog
+                    open={this.state.isTalkModalOpen}
+                    onClose={this.handleClose}
+                    aria-labelledby='form-dialog-title'
+                >
+                    <DialogTitle id='form-dialog-title'>Text To Speach</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Make kegbot say some shit
+                        </DialogContentText>
+                        <TextField
+                            id='name'
+                            label='Text to speech'
+                            type='text'
+                            value={this.state.speach}
+                            onChange={(event) => this.setState({ speach: event.target.value })}
+                            fullWidth
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color='primary'>
+                            Cancel
+                        </Button>
+                        <Button onClick={() => this.speak(this.state.speach)} color='primary'>
+                            Speak
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </AppBar>
         );
     }

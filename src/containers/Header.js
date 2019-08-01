@@ -3,6 +3,7 @@ const { withRouter } = require('react-router-dom');
 const Header = require('components/Header');
 const AuthActions = require('actions/auth');
 const MqttActions = require('actions/mqtt');
+const KegbotActions = require('actions/kegbot');
 
 // Update blocking happens when shouldComponentUpdate() blocks a downstream non-route component from updating
 // In our case, using connect() blocks the Header component from updating when location changes (and therefore
@@ -19,6 +20,7 @@ module.exports = withRouter(connect(
     {
         logout: AuthActions.logout,
         connect: MqttActions.connect,
-        disconnect: MqttActions.disconnect
+        disconnect: MqttActions.disconnect,
+        speak: KegbotActions.speak
     }
 )(Header));
