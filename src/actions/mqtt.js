@@ -43,6 +43,7 @@ exports.connect = () => {
             Client.subscribe('hackbot/faces');
             Client.subscribe('hackbot/flow-start');
             Client.subscribe('hackbot/flow-end');
+            Client.subscribe('hackbot/ir-sensors');
             dispatch(actions.connectSuccess());
         };
 

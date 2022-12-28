@@ -2,10 +2,11 @@ const React = require('react');
 const Logo = require('../assets/brut-ipa-logo.jpg');
 const { PageWrapper } = require('styles/global-components.js');
 const { Typography } = require('@material-ui/core');
+const Classes = require('./styles.scss');
 
 module.exports = () => (
 
-    <PageWrapper>
+    <PageWrapper className={Classes.pageContainer}>
         <img
             alt='Juicy Brut IPA'
             src={Logo}

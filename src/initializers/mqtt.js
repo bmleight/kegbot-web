@@ -33,9 +33,18 @@ module.exports = (store) => {
                 store.dispatch(KegbotActions.endPouring());
                 break;
 
+            case 'hackbot/ir-sensors':
+
+                console.log(message);
+                console.log(message.payloadString);
+                console.log(JSON.parse(message.payloadString));
+                break;
+
             case 'hackbot/status':
 
                 const payload = JSON.parse(message.payloadString);
+                console.log(message);
+                console.log(payload);
                 store.dispatch(KegbotActions.setBattery(payload.battery / 10));
                 break;
 
